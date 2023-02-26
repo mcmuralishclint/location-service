@@ -48,3 +48,5 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Config Files
+config.yml
