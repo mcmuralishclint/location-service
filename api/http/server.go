@@ -15,7 +15,7 @@ func NewServer(service domain.LocationService) *server {
 	router := mux.NewRouter()
 
 	handler := NewLocationHandler(service)
-	router.HandleFunc("/address", handler.GetAddressByID).Methods("GET")
+	router.HandleFunc("/address/validate", handler.GetAddressByID).Methods("GET")
 	router.HandleFunc("/address/search", handler.GetAddressSuggestionsByText).Methods("GET")
 
 	return &server{
