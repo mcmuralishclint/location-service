@@ -1,6 +1,8 @@
 package service
 
-import "github.com/mcmuralishclint/location-service/app/location/domain"
+import (
+	"github.com/mcmuralishclint/location-service/app/location/domain"
+)
 
 type locationService struct {
 	repository domain.AddressRepository
@@ -12,4 +14,8 @@ func NewLocationService(repository domain.AddressRepository) domain.LocationServ
 
 func (s *locationService) GetAddressByID(id string) (*domain.Address, error) {
 	return s.repository.GetByID(id)
+}
+
+func (s *locationService) GetQueryAutoCompleteByText(input string) ([]domain.AutocompletePrediction, error) {
+	return s.repository.QueryAutoComplete(input)
 }

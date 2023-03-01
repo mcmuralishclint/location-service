@@ -5,10 +5,7 @@ type Address struct {
 	FormattedAddress string
 }
 
-//type Properties struct {
-//	ID               string
-//	FormattedAddress string
-//	Postcode         string
-//	StreeName        string
-//	StreetNumber1    string
-//}
+type AutocompletePrediction struct {
+	Description string `json:"description,omitempty"`
+	PlaceID     string `json:"place_id,omitempty"`
+}

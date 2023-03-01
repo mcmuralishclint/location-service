@@ -26,3 +26,13 @@ func (h *locationHandler) GetAddressByID(w http.ResponseWriter, r *http.Request)
 
 	json.NewEncoder(w).Encode(address)
 }
+
+func (h *locationHandler) GetAddressSuggestionsByText(w http.ResponseWriter, r *http.Request) {
+	input := r.URL.Query().Get("q")
+	addresses, err := h.service.GetQueryAutoCompleteByText(input)
+	if err != nil {
+		http.Error(w, "Please input a valid string", http.StatusNotFound)
+		return
+	}
+	json.NewEncoder(w).Encode(addresses)
+}

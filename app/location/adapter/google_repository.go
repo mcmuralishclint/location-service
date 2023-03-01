@@ -2,7 +2,6 @@ package adapter
 
 import (
 	"context"
-	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"googlemaps.github.io/maps"
 )
@@ -20,17 +19,27 @@ func NewGoogleMapsRepository(apiKey string) (*GoogleMapsRepository, error) {
 }
 
 func (r *GoogleMapsRepository) GetByID(id string) (*domain.Address, error) {
-	req := &maps.GeocodingRequest{PlaceID: id}
-	resp, err := r.client.Geocode(context.Background(), req)
+	req := &maps.PlaceDetailsRequest{PlaceID: id}
+	resp, err := r.client.PlaceDetails(context.Background(), req)
 	if err != nil {
 		return nil, err
 	}
-	if len(resp) == 0 {
-		return nil, fmt.Errorf("address not found")
-	}
 	address := &domain.Address{
 		Type:             "google maps",
-		FormattedAddress: resp[0].FormattedAddress,
+		FormattedAddress: resp.FormattedAddress,
 	}
 	return address, nil
+}
+
+func (r *GoogleMapsRepository) QueryAutoComplete(input string) ([]domain.AutocompletePrediction, error) {
+	req := &maps.QueryAutocompleteRequest{Input: input}
+	resp, err := r.client.QueryAutocomplete(context.Background(), req)
+	if err != nil {
+		return []domain.AutocompletePrediction{}, err
+	}
+	autoCompletePredictions := []domain.AutocompletePrediction{}
+	for _, address := range resp.Predictions {
+		autoCompletePredictions = append(autoCompletePredictions, domain.AutocompletePrediction{PlaceID: address.PlaceID, Description: address.Description})
+	}
+	return autoCompletePredictions, err
 }

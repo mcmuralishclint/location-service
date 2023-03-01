@@ -20,6 +20,10 @@ func NewMockRepository() domain.AddressRepository {
 	}
 }
 
+func (r *mockRepository) QueryAutoComplete(input string) ([]domain.AutocompletePrediction, error) {
+	return []domain.AutocompletePrediction{}, nil
+}
+
 func (r *mockRepository) GetByID(id string) (*domain.Address, error) {
 	r.Lock()
 	defer r.Unlock()
