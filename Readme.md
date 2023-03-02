@@ -12,3 +12,27 @@
 ```
 main -> server -> handler -> service -> repository -> adapter -> external
 ```
+
+# Configs
+## config.yml
+```
+google:
+  maps_api_key: 'API_KEY_GOES_HERE'
+test:
+  maps_api_key: ''
+baidu:
+  maps_api_key: 'API_KEY_GOES_HERE'
+address_provider: "google"
+port: 3000
+```
+
+# How to start the project
+1. Place the config.yml file in the repo root
+2. Start the redis server locally on port 6379
+```
+docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
+```
+3. Start the application
+```
+go run main.go
+```
