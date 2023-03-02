@@ -34,6 +34,9 @@ port: 3000
 ```
 
 # How to start the project
+There are 2 ways to run the project. 
+
+## Manual 
 1. Place the config.yml file in the repo root
 2. Start the redis server locally on port 6379
 ```
@@ -48,3 +51,7 @@ make run
 ```
 make test
 ```
+
+## Docker
+1. Place the config.yml file in the repo root
+2. Run `docker-compose up`
