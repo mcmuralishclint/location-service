@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  location-service:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+  redis:
+    image: redis:latest
+    command: redis-server
+    ports:
+      - "6379:6379"
