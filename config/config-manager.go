@@ -11,8 +11,9 @@ import (
 )
 
 type ServiceConfig struct {
-	Port   int `yaml:"port"`
-	Google struct {
+	Country string `yaml:"country"`
+	Port    int    `yaml:"port"`
+	Google  struct {
 		MapsApiKey string `yaml:"maps_api_key"`
 	} `yaml:"google"`
 	AddressProvider string      `yaml:"address_provider"`
@@ -59,7 +60,7 @@ func (c *ConfigManager) LoadLocationConfig() (domain.AddressRepository, error) {
 	switch c.Config.AddressProvider {
 	case "google":
 		fmt.Println("Using Google Configs")
-		return third_party.NewGoogleMapsRepository(c.Config.Google.MapsApiKey)
+		return third_party.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country)
 	case "test":
 		fmt.Println("Using Mock Configs")
 		return third_party.NewMockRepository(), nil

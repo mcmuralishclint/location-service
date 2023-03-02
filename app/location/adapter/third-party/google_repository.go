@@ -7,15 +7,18 @@ import (
 )
 
 type GoogleMapsRepository struct {
-	client *maps.Client
+	client  *maps.Client
+	country string
 }
 
-func NewGoogleMapsRepository(apiKey string) (*GoogleMapsRepository, error) {
-	c, err := maps.NewClient(maps.WithAPIKey(apiKey))
+func NewGoogleMapsRepository(apiKey string, country string) (*GoogleMapsRepository, error) {
+	c, err := maps.NewClient(
+		maps.WithAPIKey(apiKey),
+	)
 	if err != nil {
 		return nil, err
 	}
-	return &GoogleMapsRepository{client: c}, nil
+	return &GoogleMapsRepository{client: c, country: country}, nil
 }
 
 func (r *GoogleMapsRepository) GetByID(id string) (*domain.Address, error) {
@@ -32,8 +35,9 @@ func (r *GoogleMapsRepository) GetByID(id string) (*domain.Address, error) {
 }
 
 func (r *GoogleMapsRepository) QueryAutoComplete(input string) ([]domain.AutocompletePrediction, error) {
-	req := &maps.QueryAutocompleteRequest{Input: input}
-	resp, err := r.client.QueryAutocomplete(context.Background(), req)
+	req := &maps.PlaceAutocompleteRequest{Input: input, Components: map[maps.Component][]string{maps.ComponentCountry: {r.country}}}
+
+	resp, err := r.client.PlaceAutocomplete(context.Background(), req)
 	if err != nil {
 		return []domain.AutocompletePrediction{}, err
 	}
