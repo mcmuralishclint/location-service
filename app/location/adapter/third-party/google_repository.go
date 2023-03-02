@@ -1,4 +1,4 @@
-package adapter
+package third_party
 
 import (
 	"context"
