@@ -7,10 +7,10 @@ import (
 
 type locationService struct {
 	locationRepository domain.AddressRepository
-	cacheRepository    domain.RedisRepository
+	cacheRepository    domain.CacheRepository
 }
 
-func NewLocationService(locationRepository domain.AddressRepository, cacheRepository domain.RedisRepository) domain.LocationService {
+func NewLocationService(locationRepository domain.AddressRepository, cacheRepository domain.CacheRepository) domain.LocationService {
 	return &locationService{locationRepository: locationRepository, cacheRepository: cacheRepository}
 }
 

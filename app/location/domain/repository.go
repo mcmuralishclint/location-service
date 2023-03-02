@@ -5,7 +5,7 @@ type AddressRepository interface {
 	QueryAutoComplete(input string) ([]AutocompletePrediction, error)
 }
 
-type RedisRepository interface {
+type CacheRepository interface {
 	GetAddress(string) (*Address, error)
 	SetAddress(string, *Address) error
 }

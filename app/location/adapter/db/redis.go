@@ -12,8 +12,13 @@ type redisRepo struct {
 	client *redis.Client
 }
 
-func NewRedisRepo(client *redis.Client) domain.RedisRepository {
-	return &redisRepo{client: client}
+func NewRedisRepo(host string, password string, db int) domain.CacheRepository {
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     host,
+		Password: password,
+		DB:       db,
+	})
+	return &redisRepo{client: redisClient}
 }
 
 func (r redisRepo) GetAddress(key string) (*domain.Address, error) {

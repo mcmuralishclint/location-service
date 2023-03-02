@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"github.com/mcmuralishclint/location-service/app/location/adapter/db"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"gopkg.in/yaml.v2"
@@ -16,7 +17,19 @@ type ServiceConfig struct {
 	Google struct {
 		MapsApiKey string `yaml:"maps_api_key"`
 	} `yaml:"google"`
-	AddressProvider string `yaml:"address_provider"`
+	AddressProvider string      `yaml:"address_provider"`
+	Cache           cacheConfig `yaml:"cache"`
+}
+
+type cacheConfig struct {
+	Redis   redisConfig `yaml:"redis"`
+	CacheDB string      `yaml:"cache_db"`
+}
+
+type redisConfig struct {
+	Host     string `yaml:"host"`
+	Password string `yaml:"password"`
+	DB       int    `yaml:"db"`
 }
 
 func LoadConfigs() {
@@ -40,4 +53,16 @@ func LoadLocationConfig() (domain.AddressRepository, error) {
 		return third_party.NewMockRepository(), nil
 	}
 	return nil, errors.New("Wrong Config")
+}
+
+func LoadCacheConfig() (domain.CacheRepository, error) {
+	switch Config.Cache.CacheDB {
+	case "redis":
+		fmt.Println("Redis DB was chosen as the cache layer")
+		return db.NewRedisRepo(Config.Cache.Redis.Host, Config.Cache.Redis.Password, Config.Cache.Redis.DB), nil
+	case "test":
+		fmt.Println("Redis DB was chosen as the cache layer")
+		return db.NewMockRepo("", "", 0), nil
+	}
+	return db.NewMockRepo("", "", 0), nil
 }
