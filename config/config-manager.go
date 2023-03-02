@@ -10,8 +10,6 @@ import (
 	"os"
 )
 
-var Config ServiceConfig
-
 type ServiceConfig struct {
 	Port   int `yaml:"port"`
 	Google struct {
@@ -32,22 +30,36 @@ type redisConfig struct {
 	DB       int    `yaml:"db"`
 }
 
-func LoadConfigs() {
+type ConfigManager struct {
+	Config ServiceConfig
+}
+
+func NewConfigManager() *ConfigManager {
+	return &ConfigManager{}
+}
+
+type ConfigInterface interface {
+	LoadConfigs() *ServiceConfig
+	LoadLocationConfig() (domain.AddressRepository, error)
+	LoadCacheConfig() (domain.CacheRepository, error)
+}
+
+func (c *ConfigManager) LoadConfigs() {
 	// Read the contents of the YAML file
 	data, err := os.ReadFile("config.yml")
 	if err != nil {
 		panic(err)
 	}
-	err = yaml.Unmarshal(data, &Config)
+	err = yaml.Unmarshal(data, &c.Config)
 	if err != nil {
 		panic(err)
 	}
 }
-func LoadLocationConfig() (domain.AddressRepository, error) {
-	switch Config.AddressProvider {
+func (c *ConfigManager) LoadLocationConfig() (domain.AddressRepository, error) {
+	switch c.Config.AddressProvider {
 	case "google":
 		fmt.Println("Using Google Configs")
-		return third_party.NewGoogleMapsRepository(Config.Google.MapsApiKey)
+		return third_party.NewGoogleMapsRepository(c.Config.Google.MapsApiKey)
 	case "test":
 		fmt.Println("Using Mock Configs")
 		return third_party.NewMockRepository(), nil
@@ -55,11 +67,11 @@ func LoadLocationConfig() (domain.AddressRepository, error) {
 	return nil, errors.New("Wrong Config")
 }
 
-func LoadCacheConfig() (domain.CacheRepository, error) {
-	switch Config.Cache.CacheDB {
+func (c *ConfigManager) LoadCacheConfig() (domain.CacheRepository, error) {
+	switch c.Config.Cache.CacheDB {
 	case "redis":
 		fmt.Println("Redis DB was chosen as the cache layer")
-		return db.NewRedisRepo(Config.Cache.Redis.Host, Config.Cache.Redis.Password, Config.Cache.Redis.DB), nil
+		return db.NewRedisRepo(c.Config.Cache.Redis.Host, c.Config.Cache.Redis.Password, c.Config.Cache.Redis.DB), nil
 	case "test":
 		fmt.Println("Redis DB was chosen as the cache layer")
 		return db.NewMockRepo("", "", 0), nil

@@ -8,26 +8,26 @@ import (
 	"strconv"
 )
 
-var Config config.ServiceConfig
+var ConfigManager *config.ConfigManager
 
 func init() {
-	config.LoadConfigs()
-	Config = config.Config
+	ConfigManager = config.NewConfigManager()
+	ConfigManager.LoadConfigs()
 }
 
 func main() {
-	cacheRepository, err := config.LoadCacheConfig()
+	cacheRepository, err := ConfigManager.LoadCacheConfig()
 	if err != nil {
 		panic(err)
 	}
-	locationRepository, err := config.LoadLocationConfig()
+	locationRepository, err := ConfigManager.LoadLocationConfig()
 	if err != nil {
 		panic(err)
 	}
 	locationService := service.NewLocationService(locationRepository, cacheRepository)
 
 	server := http.NewServer(locationService)
-	port := Config.Port
+	port := ConfigManager.Config.Port
 
 	fmt.Println("Server listening on :" + strconv.Itoa(port))
 	if err := server.Start(":" + strconv.Itoa(port)); err != nil {
