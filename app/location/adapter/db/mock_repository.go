@@ -12,7 +12,14 @@ func NewMockRepo(host string, password string, db int) domain.CacheRepository {
 }
 
 func (r mockRepo) GetAddress(key string) (*domain.Address, error) {
-	return nil, nil
+	addressMap := map[string]domain.Address{
+		"CACHED_ADDRESS": {Type: "TestType", FormattedAddress: "TestFormattedAddr"},
+	}
+	address, ok := addressMap[key]
+	if !ok {
+		return nil, nil
+	}
+	return &address, nil
 }
 
 func (r mockRepo) SetAddress(key string, address *domain.Address) error {
