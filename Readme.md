@@ -23,6 +23,13 @@ test:
 baidu:
   maps_api_key: 'API_KEY_GOES_HERE'
 address_provider: "google"
+cache:
+  redis:
+    host: "localhost:6379"
+    password: ""
+    db: 0
+  cache_db: "redis"
+
 port: 3000
 ```
 
