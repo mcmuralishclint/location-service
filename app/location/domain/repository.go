@@ -4,3 +4,8 @@ type AddressRepository interface {
 	GetByID(id string) (*Address, error)
 	QueryAutoComplete(input string) ([]AutocompletePrediction, error)
 }
+
+type RedisRepository interface {
+	GetAddress(string) (*Address, error)
+	SetAddress(string, *Address) error
+}

@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"github.com/mcmuralishclint/location-service/api/http"
+	"github.com/mcmuralishclint/location-service/app/location/adapter/db"
 	"github.com/mcmuralishclint/location-service/app/location/service"
 	"github.com/mcmuralishclint/location-service/config"
 	"strconv"
@@ -17,8 +19,17 @@ func init() {
 
 func main() {
 	//repository := adapter.NewMockRepository()
-	repository, _ := config.LoadLocationConfig()
-	locationService := service.NewLocationService(repository)
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+	cacheRepository := db.NewRedisRepo(redisClient)
+	locationRepository, err := config.LoadLocationConfig()
+	if err != nil {
+		panic(err)
+	}
+	locationService := service.NewLocationService(locationRepository, cacheRepository)
 
 	server := http.NewServer(locationService)
 	port := Config.Port
