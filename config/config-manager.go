@@ -3,7 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
-	"github.com/mcmuralishclint/location-service/app/location/adapter"
+	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -34,10 +34,10 @@ func LoadLocationConfig() (domain.AddressRepository, error) {
 	switch Config.AddressProvider {
 	case "google":
 		fmt.Println("Using Google Configs")
-		return adapter.NewGoogleMapsRepository(Config.Google.MapsApiKey)
+		return third_party.NewGoogleMapsRepository(Config.Google.MapsApiKey)
 	case "test":
 		fmt.Println("Using Mock Configs")
-		return adapter.NewMockRepository(), nil
+		return third_party.NewMockRepository(), nil
 	}
 	return nil, errors.New("Wrong Config")
 }
