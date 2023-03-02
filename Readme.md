@@ -41,5 +41,10 @@ docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:la
 ```
 3. Start the application
 ```
-go run main.go
+make run
+```
+
+4. Run unit tests and export the coverage
+```
+make test
 ```
