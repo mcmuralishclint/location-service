@@ -21,10 +21,7 @@ func (s *locationService) GetAddressByID(id string) (*domain.Address, error) {
 		return address, nil
 	}
 	address, _ = s.locationRepository.GetByID(id)
-	err := s.cacheRepository.SetAddress(id, address)
-	if err != nil {
-		return nil, err
-	}
+	s.cacheRepository.SetAddress(id, address)
 	return address, nil
 }
 
