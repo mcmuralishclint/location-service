@@ -48,8 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
-# Config Files
-config.yml
+## Config Files
+#config.yml
 
 # cov file
 coverage.out
