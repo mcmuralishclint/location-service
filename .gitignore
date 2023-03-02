@@ -50,3 +50,6 @@ Thumbs.db
 
 # Config Files
 config.yml
+
+# cov file
+coverage.out
