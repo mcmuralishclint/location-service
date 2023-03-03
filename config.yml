@@ -1,9 +1,9 @@
 google:
-  maps_api_key: ${{ secrets.GOOGLE_API_KEY }}
+  maps_api_key: "${GOOGLE_MAPS_API_KEY}"
 test:
   maps_api_key: ''
 baidu:
-  maps_api_key: ${{ secrets.BAIDU_API_KEY }}
+  maps_api_key: "${BAIDU_MAPS_API_KEY}"
 address_provider: "google"
 
 cache:
