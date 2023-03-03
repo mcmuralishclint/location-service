@@ -23,7 +23,7 @@ func NewRedisRepo(host string, password string, db int) domain.CacheRepository {
 
 func (r redisRepo) GetAddress(key string) (*domain.Address, error) {
 	data, err := r.client.Get(context.Background(), key).Bytes()
-	if err != nil {
+	if err != nil && err != redis.Nil {
 		return nil, err
 	}
 	var address *domain.Address

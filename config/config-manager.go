@@ -56,11 +56,11 @@ func (c *ConfigManager) LoadConfigs() {
 		panic(err)
 	}
 }
-func (c *ConfigManager) LoadLocationConfig() (domain.AddressRepository, error) {
+func (c *ConfigManager) LoadLocationConfig(cacheRepository *domain.CacheRepository) (domain.AddressRepository, error) {
 	switch c.Config.AddressProvider {
 	case "google":
 		fmt.Println("Using Google Configs")
-		return third_party.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country)
+		return third_party.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country, *cacheRepository)
 	case "test":
 		fmt.Println("Using Mock Configs")
 		return third_party.NewMockRepository(), nil

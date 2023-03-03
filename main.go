@@ -20,11 +20,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	locationRepository, err := ConfigManager.LoadLocationConfig()
+	locationRepository, err := ConfigManager.LoadLocationConfig(&cacheRepository)
 	if err != nil {
 		panic(err)
 	}
-	locationService := service.NewLocationService(locationRepository, cacheRepository)
+	locationService := service.NewLocationService(locationRepository)
 
 	server := http.NewServer(locationService)
 	port := ConfigManager.Config.Port

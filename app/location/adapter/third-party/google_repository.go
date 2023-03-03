@@ -7,30 +7,37 @@ import (
 )
 
 type GoogleMapsRepository struct {
-	client  *maps.Client
-	country string
+	client    *maps.Client
+	country   string
+	cacheRepo domain.CacheRepository
 }
 
-func NewGoogleMapsRepository(apiKey string, country string) (*GoogleMapsRepository, error) {
+func NewGoogleMapsRepository(apiKey string, country string, cacheRepo domain.CacheRepository) (*GoogleMapsRepository, error) {
 	c, err := maps.NewClient(
 		maps.WithAPIKey(apiKey),
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &GoogleMapsRepository{client: c, country: country}, nil
+	return &GoogleMapsRepository{client: c, country: country, cacheRepo: cacheRepo}, nil
 }
 
 func (r *GoogleMapsRepository) GetByID(id string) (*domain.Address, error) {
+	address, _ := r.cacheRepo.GetAddress(id)
+	if address != nil {
+		return address, nil
+	}
+
 	req := &maps.PlaceDetailsRequest{PlaceID: id}
 	resp, err := r.client.PlaceDetails(context.Background(), req)
 	if err != nil {
 		return nil, err
 	}
-	address := &domain.Address{
+	address = &domain.Address{
 		Type:             "google maps",
 		FormattedAddress: resp.FormattedAddress,
 	}
+	r.cacheRepo.SetAddress(id, address)
 	return address, nil
 }
 
