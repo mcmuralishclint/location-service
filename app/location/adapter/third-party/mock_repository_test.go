@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestNewGoogleMapsRepository(t *testing.T) {
+func TestNewMockRepository(t *testing.T) {
 	repo := NewMockRepository()
 	if repo == nil {
 		t.Fatalf("expected repo to not be nil")
