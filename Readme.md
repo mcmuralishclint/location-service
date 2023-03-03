@@ -56,4 +56,7 @@ make test
 
 ## Docker
 1. Place the config.yml file in the repo root
-2. Run `docker-compose up`
+2. Update the api key for the service of your choice
+3. Update the address_provider key in the config.yml with the service of your choice (e.g: google)
+4. Update the cache_db key in the config.yml with the db of your choice (e.g: redis)
+5. Run `docker-compose up`
