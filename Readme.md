@@ -1,5 +1,7 @@
 # Hex Arch FAQ
 
+![alt text](https://vaadin.com/static/content/learning-center/learn/tutorials/ddd/03__ddd_and_hexagonal/images/hexagonal.png)
+
 1. What is an adapter?
 `This is the layer that communicates with external entities such as databases, RMQs, APIs, etc`
 2. What is a domain?
