@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/db"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party"
+	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party/google"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -60,7 +61,7 @@ func (c *ConfigManager) LoadLocationConfig(cacheRepository *domain.CacheReposito
 	switch c.Config.AddressProvider {
 	case "google":
 		fmt.Println("Using Google Configs")
-		return third_party.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country, *cacheRepository)
+		return google.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country, *cacheRepository)
 	case "test":
 		fmt.Println("Using Mock Configs")
 		return third_party.NewMockRepository(), nil

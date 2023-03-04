@@ -12,13 +12,9 @@ type AutocompletePrediction struct {
 }
 
 type AddressComponents struct {
-	Subpremise          string `json:"subpremise"`
-	StreetNumber        string `json:"street_number"`
-	Route               string `json:"route"`
-	Locality            string `json:"locality"`
-	AdministrativeArea3 string `json:"administrative_area_level_3"`
-	AdministrativeArea2 string `json:"administrative_area_level_2"`
-	AdministrativeArea1 string `json:"administrative_area_level_1"`
-	Country             string `json:"country"`
-	PostalCode          string `json:"postal_code"`
+	StreetNumber string `json:"street_number"`
+	StreetName   string `json:"street_name"`
+	City         string `json:"city"`
+	Country      string `json:"country"`
+	PostalCode   string `json:"postal_code"`
 }
