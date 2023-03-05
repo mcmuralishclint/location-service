@@ -35,13 +35,8 @@ func (r *GoogleMapsRepository) GetByID(id string) (*domain.Address, error) {
 	}
 
 	addressFormatter := NewGoogleAddressFormatter()
-	addressComponents, err := addressFormatter.FormatAddress(resp.AddressComponents)
-
-	address = &domain.Address{
-		Type:              "google maps",
-		FormattedAddress:  resp.FormattedAddress,
-		AddressComponents: addressComponents,
-	}
+	address, err = addressFormatter.FormatAddress(resp.AddressComponents)
+	address.FormattedAddress = resp.FormattedAddress
 
 	r.cacheRepo.SetAddress(id, address)
 	return address, nil
