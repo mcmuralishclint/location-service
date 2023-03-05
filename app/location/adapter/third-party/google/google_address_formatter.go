@@ -2,7 +2,9 @@ package google
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
+	"googlemaps.github.io/maps"
 )
 
 type GoogleAddressFormatter struct{}
@@ -12,6 +14,7 @@ func NewGoogleAddressFormatter() *GoogleAddressFormatter {
 }
 
 func (f *GoogleAddressFormatter) FormatAddress(data interface{}) (*domain.AddressComponents, error) {
+	fmt.Println(data)
 	var result []map[string]interface{}
 	jsonData, _ := json.Marshal(data)
 	json.Unmarshal([]byte(jsonData), &result)
@@ -33,4 +36,12 @@ func (f *GoogleAddressFormatter) FormatAddress(data interface{}) (*domain.Addres
 		}
 	}
 	return address, nil
+}
+
+func (f *GoogleAddressFormatter) FormatAddressSuggestion(data maps.AutocompleteResponse) ([]domain.AutocompletePrediction, error) {
+	autoCompletePredictions := []domain.AutocompletePrediction{}
+	for _, address := range data.Predictions {
+		autoCompletePredictions = append(autoCompletePredictions, domain.AutocompletePrediction{PlaceID: address.PlaceID, Description: address.Description})
+	}
+	return autoCompletePredictions, nil
 }

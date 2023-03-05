@@ -54,9 +54,9 @@ func (r *GoogleMapsRepository) QueryAutoComplete(input string) ([]domain.Autocom
 	if err != nil {
 		return []domain.AutocompletePrediction{}, err
 	}
-	autoCompletePredictions := []domain.AutocompletePrediction{}
-	for _, address := range resp.Predictions {
-		autoCompletePredictions = append(autoCompletePredictions, domain.AutocompletePrediction{PlaceID: address.PlaceID, Description: address.Description})
-	}
-	return autoCompletePredictions, err
+
+	addressFormatter := NewGoogleAddressFormatter()
+	predictions, err := addressFormatter.FormatAddressSuggestion(resp)
+
+	return predictions, err
 }
