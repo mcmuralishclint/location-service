@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/db"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party"
+	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party/geoscape"
+	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party/google"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -16,6 +18,9 @@ type ServiceConfig struct {
 	Google  struct {
 		MapsApiKey string `yaml:"maps_api_key"`
 	} `yaml:"google"`
+	Geoscape struct {
+		MapsApiKey string `yaml:"maps_api_key"`
+	} `yaml:"geoscape"`
 	AddressProvider string      `yaml:"address_provider"`
 	Cache           cacheConfig `yaml:"cache"`
 }
@@ -60,7 +65,10 @@ func (c *ConfigManager) LoadLocationConfig(cacheRepository *domain.CacheReposito
 	switch c.Config.AddressProvider {
 	case "google":
 		fmt.Println("Using Google Configs")
-		return third_party.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country, *cacheRepository)
+		return google.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country, *cacheRepository)
+	case "geoscape":
+		fmt.Println("Using Geoscape Configs")
+		return geoscape.NewGeoscapeRepository(c.Config.Geoscape.MapsApiKey, c.Config.Country, *cacheRepository)
 	case "test":
 		fmt.Println("Using Mock Configs")
 		return third_party.NewMockRepository(), nil
