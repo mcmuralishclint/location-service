@@ -3,6 +3,7 @@ package geoscape
 import (
 	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
+	"github.com/mcmuralishclint/location-service/util"
 	"io"
 	"log"
 	"net/http"
@@ -44,6 +45,8 @@ func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 
 	addressFormatter := NewGeoscapeAddressFormatter()
 	address, err = addressFormatter.FormatAddress(body)
+
+	util.PopulateAddressCountry(address, r.country)
 
 	// end call API
 	r.cacheRepo.SetAddress(id, address)

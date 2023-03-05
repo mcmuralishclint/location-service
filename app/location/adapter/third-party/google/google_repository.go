@@ -3,6 +3,7 @@ package google
 import (
 	"context"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
+	"github.com/mcmuralishclint/location-service/util"
 	"googlemaps.github.io/maps"
 )
 
@@ -37,6 +38,7 @@ func (r *GoogleMapsRepository) GetByID(id string) (*domain.Address, error) {
 	addressFormatter := NewGoogleAddressFormatter()
 	address, err = addressFormatter.FormatAddress(resp.AddressComponents)
 	address.FormattedAddress = resp.FormattedAddress
+	util.PopulateAddressCountry(address, r.country)
 
 	r.cacheRepo.SetAddress(id, address)
 	return address, nil
