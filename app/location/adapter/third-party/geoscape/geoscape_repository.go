@@ -25,13 +25,32 @@ func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 	}
 	// call API
 
+	endpoint := fmt.Sprintf("https://api.psma.com.au/v1/predictive/address/%s", id)
+	req, err := http.NewRequest("GET", endpoint, nil)
+	if err != nil {
+		log.Fatalf("Error creating HTTP request: %v", err)
+	}
+	req.Header.Set("Authorization", r.ApiKey)
+	req.Header.Set("Accept", "")
+	req.Header.Set("Accept-Crs", "")
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatalf("Error making HTTP request: %v", err)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+
+	addressFormatter := NewGeoscapeAddressFormatter()
+	address, err = addressFormatter.FormatAddress(body)
+
 	// end call API
 	r.cacheRepo.SetAddress(id, address)
 	return address, nil
 }
 
 func (r *GeoscapeRepository) QueryAutoComplete(input string) ([]domain.AutocompletePrediction, error) {
-	//call api
 	endpoint := fmt.Sprintf("https://api.psma.com.au/v1/predictive/address?query=%s", input)
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {

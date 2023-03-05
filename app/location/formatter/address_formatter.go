@@ -5,6 +5,6 @@ import (
 )
 
 type AddressFormatter interface {
-	FormatAddress(interface{}) (domain.AddressComponents, error)
+	FormatAddress(interface{}) (*domain.Address, error)
 	FormatAddressSuggestion(interface{}) ([]domain.AutocompletePrediction, error)
 }
