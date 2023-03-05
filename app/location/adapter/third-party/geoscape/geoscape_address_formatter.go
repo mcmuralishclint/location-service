@@ -21,7 +21,7 @@ func (f *GeoscapeAddressFormatter) FormatAddress(data interface{}) (*domain.Addr
 	address := domain.Address{}
 
 	if response["address"] == nil {
-		return nil, nil
+		return &address, nil
 	}
 	propertiesResponse := response["address"].(map[string]interface{})["properties"]
 

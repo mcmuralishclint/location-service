@@ -1,11 +1,11 @@
 package geoscape
 
 import (
+	"errors"
 	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"github.com/mcmuralishclint/location-service/util"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -22,14 +22,14 @@ func NewGeoscapeRepository(apiKey string, country string, cacheRepo domain.Cache
 func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 	address, _ := r.cacheRepo.GetAddress(id)
 	if address != nil {
-		return address, nil
+		return nil, errors.New("Address not found")
 	}
 	// call API
 
 	endpoint := fmt.Sprintf("https://api.psma.com.au/v1/predictive/address/%s", id)
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
-		log.Fatalf("Error creating HTTP request: %v", err)
+		return nil, errors.New("Address not found")
 	}
 	req.Header.Set("Authorization", r.ApiKey)
 	req.Header.Set("Accept", "")
@@ -38,7 +38,7 @@ func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Fatalf("Error making HTTP request: %v", err)
+		return nil, errors.New("Address not found")
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
@@ -46,6 +46,9 @@ func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 	addressFormatter := NewGeoscapeAddressFormatter()
 	address, err = addressFormatter.FormatAddress(body)
 
+	if address.Type == "" {
+		return nil, errors.New("Address not found")
+	}
 	util.PopulateAddressCountry(address, r.country)
 
 	// end call API
@@ -57,7 +60,7 @@ func (r *GeoscapeRepository) QueryAutoComplete(input string) ([]domain.Autocompl
 	endpoint := fmt.Sprintf("https://api.psma.com.au/v1/predictive/address?query=%s", input)
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
-		log.Fatalf("Error creating HTTP request: %v", err)
+		return nil, errors.New("Keyword not found")
 	}
 	req.Header.Set("Authorization", r.ApiKey)
 	req.Header.Set("Accept", "")
@@ -67,11 +70,11 @@ func (r *GeoscapeRepository) QueryAutoComplete(input string) ([]domain.Autocompl
 	resp, err := http.DefaultClient.Do(req)
 
 	if err != nil {
-		log.Fatalf("Error making HTTP request: %v", err)
+		return nil, errors.New("Keyword not found")
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
-
+	fmt.Println(string(body))
 	addressFormatter := NewGeoscapeAddressFormatter()
 	predictions, err := addressFormatter.FormatAddressSuggestion(body)
 

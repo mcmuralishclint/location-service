@@ -13,8 +13,8 @@ func NewLocationService(locationRepository domain.AddressRepository) domain.Loca
 }
 
 func (s *locationService) GetAddressByID(id string) (*domain.Address, error) {
-	address, _ := s.locationRepository.GetByID(id)
-	return address, nil
+	address, err := s.locationRepository.GetByID(id)
+	return address, err
 }
 
 func (s *locationService) GetQueryAutoCompleteByText(input string) ([]domain.AutocompletePrediction, error) {
