@@ -1,9 +1,0 @@
-image: golang:1.17
-
-pipelines:
-  default:
-    - parallel:
-      - step:
-          name: Test
-          script:
-            - make test
