@@ -35,7 +35,7 @@ func (f *GoogleAddressFormatter) FormatAddress(data interface{}) (*domain.Addres
 		}
 	}
 	address := &domain.Address{
-		Type:              "google maps",
+		Type:              "Google",
 		AddressComponents: addressComponent,
 	}
 	return address, nil
