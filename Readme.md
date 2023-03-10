@@ -54,6 +54,11 @@ make run
 make test
 ```
 
+5. View Swagger File
+```
+navigate to http://localhost:3000/swagger/index.html
+```
+
 ## Docker
 1. Place the config.yml file in the repo root
 2. Update the api key for the service of your choice

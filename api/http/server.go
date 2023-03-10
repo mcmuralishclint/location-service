@@ -1,10 +1,12 @@
 package http
 
 import (
+	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
+	_ "github.com/mcmuralishclint/location-service/docs"
 )
 
 type server struct {
@@ -20,6 +22,10 @@ func NewServer(service domain.LocationService) *server {
 	addressRouter.HandleFunc("/validate", handler.GetAddressByID).Methods("GET")
 	addressRouter.HandleFunc("/search", handler.GetAddressSuggestionsByText).Methods("GET")
 
+	// swagger
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+
+	// server
 	return &server{
 		handler: router,
 	}
