@@ -1,12 +1,10 @@
 google:
-  maps_api_key: "${GOOGLE_MAPS_API_KEY}"
+  maps_api_key: ${{ secrets.GOOGLE_API_KEY }}
 test:
   maps_api_key: ''
 geoscape:
-  maps_api_key: "${GEOSCAPE_MAPS_API_KEY}"
-baidu:
-  maps_api_key: "${BITBUCKET_PR_DESTINATION_BRANCH}"
-address_provider: "geoscape"
+  maps_api_key: ${{ secrets.GEOSCAPE_API_KEY }}
+address_provider: "google"
 
 cache:
   redis:
