@@ -1,7 +1,7 @@
 package service
 
 import (
-	third_party "github.com/mcmuralishclint/location-service/app/location/adapter/third-party"
+	third_party "github.com/mcmuralishclint/location-service/app/location/adapter/third-party/mock"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"github.com/stretchr/testify/assert"
 	"testing"

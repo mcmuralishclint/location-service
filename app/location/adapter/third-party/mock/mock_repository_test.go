@@ -1,4 +1,4 @@
-package third_party
+package mock
 
 import (
 	"github.com/mcmuralishclint/location-service/app/location/domain"

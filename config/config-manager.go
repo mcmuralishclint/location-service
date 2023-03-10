@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/db"
-	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party/geoscape"
 	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party/google"
+	"github.com/mcmuralishclint/location-service/app/location/adapter/third-party/mock"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 	"gopkg.in/yaml.v2"
 	"os"
@@ -80,7 +80,7 @@ func (c *ConfigManager) LoadLocationConfig(cacheRepository *domain.CacheReposito
 		return geoscape.NewGeoscapeRepository(c.Config.LocationPartner.Geoscape.MapsApiKey, c.Config.Country, *cacheRepository)
 	case "test":
 		fmt.Println("Using Mock Configs")
-		return third_party.NewMockRepository(), nil
+		return mock.NewMockRepository(), nil
 	}
 	return nil, errors.New("Wrong Config")
 }
