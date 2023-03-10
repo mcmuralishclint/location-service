@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/mcmuralishclint/location-service/api/middleware"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 
@@ -15,9 +16,11 @@ type server struct {
 
 func NewServer(service domain.LocationService) *server {
 	router := mux.NewRouter()
+	router.Use(middleware.LoggingMiddleware)
 
 	handler := NewLocationHandler(service)
 
+	// address routes
 	addressRouter := router.PathPrefix("/api/v1/address").Subrouter()
 	addressRouter.HandleFunc("/validate", handler.GetAddressByID).Methods("GET")
 	addressRouter.HandleFunc("/search", handler.GetAddressSuggestionsByText).Methods("GET")
