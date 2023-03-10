@@ -13,6 +13,7 @@ type server struct {
 
 func NewServer(service domain.LocationService) *server {
 	router := mux.NewRouter()
+	router.PathPrefix("/swagger/").Handler(http.StripPrefix("/swagger/", http.FileServer(http.Dir("./docs"))))
 
 	handler := NewLocationHandler(service)
 

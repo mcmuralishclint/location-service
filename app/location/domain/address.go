@@ -1,14 +1,23 @@
 package domain
 
+// Address represents a physical address.
+// swagger:model
 type Address struct {
-	Type              string
-	FormattedAddress  string
-	AddressComponents interface{}
+	// The type of the address, such as "google" or "geoscape".
+	Type string `json:"type"`
+	// The formatted address string.
+	FormattedAddress string `json:"formattedAddress"`
+	// The components of the address, such as street number, street name, city, state, etc.
+	AddressComponents interface{} `json:"addressComponents"`
 }
 
+// AutocompletePrediction represents a physical address.
+// swagger:model
 type AutocompletePrediction struct {
+	// Formatted Address.
 	Description string `json:"description,omitempty"`
-	PlaceID     string `json:"place_id,omitempty"`
+	// address id.
+	PlaceID string `json:"place_id,omitempty"`
 }
 
 type AddressComponents struct {

@@ -15,6 +15,11 @@ func init() {
 	ConfigManager.LoadConfigs()
 }
 
+// @title Location Service
+// @description Location Service
+// @version 1
+// @host localhost:3000
+// @BasePath /
 func main() {
 	cacheRepository, err := ConfigManager.LoadCacheConfig()
 	if err != nil {
