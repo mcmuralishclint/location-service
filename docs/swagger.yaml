@@ -44,7 +44,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.AutocompletePrediction'
+            items:
+              $ref: '#/definitions/domain.AutocompletePrediction'
+            type: array
         "404":
           description: Please input a valid string
           schema:

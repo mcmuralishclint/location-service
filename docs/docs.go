@@ -39,7 +39,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.AutocompletePrediction"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.AutocompletePrediction"
+                            }
                         }
                     },
                     "404": {
