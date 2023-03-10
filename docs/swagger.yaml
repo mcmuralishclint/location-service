@@ -1,0 +1,79 @@
+basePath: /
+definitions:
+  domain.Address:
+    properties:
+      addressComponents:
+        description: The components of the address, such as street number, street
+          name, city, state, etc.
+      formattedAddress:
+        description: The formatted address string.
+        type: string
+      type:
+        description: The type of the address, such as "google" or "geoscape".
+        type: string
+    type: object
+  domain.AutocompletePrediction:
+    properties:
+      description:
+        description: Formatted Address.
+        type: string
+      place_id:
+        description: address id.
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: Location Service
+  title: Location Service
+  version: "1"
+paths:
+  /api/v1/address/predict:
+    get:
+      description: Get addresses by string.
+      operationId: get-addresses-by-string
+      parameters:
+      - description: Address ID
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AutocompletePrediction'
+        "404":
+          description: Please input a valid string
+          schema:
+            type: string
+      summary: Get address suggestions by string
+      tags:
+      - Addresses
+  /api/v1/address/validate:
+    get:
+      description: Get an address by its ID.
+      operationId: get-address-by-id
+      parameters:
+      - description: Address ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Address'
+        "404":
+          description: address not found
+          schema:
+            type: string
+      summary: Get address by ID
+      tags:
+      - Addresses
+swagger: "2.0"
