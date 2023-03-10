@@ -28,7 +28,7 @@ info:
   title: Location Service
   version: "1"
 paths:
-  /api/v1/address/predict:
+  /api/v1/address/search:
     get:
       description: Get addresses by string.
       operationId: get-addresses-by-string

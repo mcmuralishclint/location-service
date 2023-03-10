@@ -9,7 +9,7 @@
     "host": "localhost:3000",
     "basePath": "/",
     "paths": {
-        "/api/v1/address/predict": {
+        "/api/v1/address/search": {
             "get": {
                 "description": "Get addresses by string.",
                 "produces": [
