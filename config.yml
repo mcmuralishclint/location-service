@@ -11,7 +11,8 @@ cache:
     host: "localhost:6379"
     password: ""
     db: 0
-  cache_db: "redis"
+  in_memory:
+  cache_db: "in_memory"
 
 country: "AU"
 port: 3000

@@ -26,10 +26,12 @@ type ServiceConfig struct {
 }
 
 type cacheConfig struct {
-	Redis   redisConfig `yaml:"redis"`
-	CacheDB string      `yaml:"cache_db"`
+	Redis    redisConfig `yaml:"redis"`
+	InMemory inMemConfig `yaml:"in_memory"`
+	CacheDB  string      `yaml:"cache_db"`
 }
 
+type inMemConfig struct{}
 type redisConfig struct {
 	Host     string `yaml:"host"`
 	Password string `yaml:"password"`
@@ -81,6 +83,9 @@ func (c *ConfigManager) LoadCacheConfig() (domain.CacheRepository, error) {
 	case "redis":
 		fmt.Println("Redis DB was chosen as the cache layer")
 		return db.NewRedisRepo(c.Config.Cache.Redis.Host, c.Config.Cache.Redis.Password, c.Config.Cache.Redis.DB), nil
+	case "in_memory":
+		fmt.Println("In Memory Cache was chosen as the cache layer")
+		return db.NewInMemRepo(), nil
 	case "test":
 		fmt.Println("Redis DB was chosen as the cache layer")
 		return db.NewMockRepo("", "", 0), nil
