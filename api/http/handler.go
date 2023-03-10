@@ -46,7 +46,7 @@ func (h *locationHandler) GetAddressByID(w http.ResponseWriter, r *http.Request)
 // @Param q query string true "Address ID"
 // @Success 200 {array} domain.AutocompletePrediction
 // @Failure 404 {string} string "Please input a valid string"
-// @Router /api/v1/address/predict [get]
+// @Router /api/v1/address/search [get]
 func (h *locationHandler) GetAddressSuggestionsByText(w http.ResponseWriter, r *http.Request) {
 	input := r.URL.Query().Get("q")
 	addresses, err := h.service.GetQueryAutoCompleteByText(input)

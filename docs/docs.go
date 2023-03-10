@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/address/predict": {
+        "/api/v1/address/search": {
             "get": {
                 "description": "Get addresses by string.",
                 "produces": [

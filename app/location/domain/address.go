@@ -8,10 +8,10 @@ type Address struct {
 	// The formatted address string.
 	FormattedAddress string `json:"formattedAddress"`
 	// The components of the address, such as street number, street name, city, state, etc.
-	AddressComponents interface{} `json:"addressComponents"`
+	AddressComponents interface{} `json:"addressComponents" ref:"#definitions/AddressComponents"`
 }
 
-// AutocompletePrediction represents a physical address.
+// AutocompletePrediction represents a prediction response
 // swagger:model
 type AutocompletePrediction struct {
 	// Formatted Address.
@@ -20,6 +20,8 @@ type AutocompletePrediction struct {
 	PlaceID string `json:"place_id,omitempty"`
 }
 
+// AddressComponents represents a physical address' fields.
+// swagger:model
 type AddressComponents struct {
 	StreetNumber string `json:"street_number"`
 	StreetName   string `json:"street_name"`
