@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+	"fmt"
 	"github.com/mcmuralishclint/location-service/app/location/domain"
 )
 
@@ -13,10 +15,14 @@ func NewLocationService(locationRepository domain.AddressRepository) domain.Loca
 }
 
 func (s *locationService) GetAddressByID(id string) (*domain.Address, error) {
-	address, _ := s.locationRepository.GetByID(id)
-	return address, nil
+	address, err := s.locationRepository.GetByID(id)
+	return address, err
 }
 
 func (s *locationService) GetQueryAutoCompleteByText(input string) ([]domain.AutocompletePrediction, error) {
-	return s.locationRepository.QueryAutoComplete(input)
+	addresses, err := s.locationRepository.QueryAutoComplete(input)
+	if len(addresses) == 0 {
+		err = errors.New(fmt.Sprintf("Unable to find addresses for input %s", input))
+	}
+	return addresses, err
 }
