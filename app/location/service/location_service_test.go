@@ -43,6 +43,6 @@ func TestLocationService_GetQueryAutoCompleteByText(t *testing.T) {
 	// invalid suggestion
 	id = "invalid"
 	addresses, err = service.GetQueryAutoCompleteByText(id)
-	assert.Equal(t, err.Error(), "Unable to find addresses for input invalid")
+	assert.Equal(t, err.Error(), "No suggestions found")
 	assert.Equal(t, addresses, []domain.AutocompletePrediction([]domain.AutocompletePrediction(nil)))
 }

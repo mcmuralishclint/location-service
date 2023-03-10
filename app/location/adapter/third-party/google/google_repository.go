@@ -33,7 +33,7 @@ func (r *GoogleMapsRepository) GetByID(id string) (*domain.Address, error) {
 	req := &maps.PlaceDetailsRequest{PlaceID: id}
 	resp, err := r.client.PlaceDetails(context.Background(), req)
 	if err != nil {
-		return nil, errors.New("Address not found")
+		return nil, err
 	}
 
 	addressFormatter := NewGoogleAddressFormatter()
@@ -53,7 +53,7 @@ func (r *GoogleMapsRepository) QueryAutoComplete(input string) ([]domain.Autocom
 
 	resp, err := r.client.PlaceAutocomplete(context.Background(), req)
 	if err != nil {
-		return nil, errors.New("Address not found")
+		return nil, err
 	}
 
 	addressFormatter := NewGoogleAddressFormatter()

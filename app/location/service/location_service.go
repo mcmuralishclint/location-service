@@ -21,6 +21,9 @@ func (s *locationService) GetAddressByID(id string) (*domain.Address, error) {
 
 func (s *locationService) GetQueryAutoCompleteByText(input string) ([]domain.AutocompletePrediction, error) {
 	addresses, err := s.locationRepository.QueryAutoComplete(input)
+	if err != nil {
+		return nil, err
+	}
 	if len(addresses) == 0 {
 		err = errors.New(fmt.Sprintf("Unable to find addresses for input %s", input))
 	}

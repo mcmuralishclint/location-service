@@ -30,7 +30,7 @@ func (h *locationHandler) GetAddressByID(w http.ResponseWriter, r *http.Request)
 
 	address, err := h.service.GetAddressByID(idParam)
 	if err != nil {
-		http.Error(w, "address not found", http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 
@@ -51,7 +51,7 @@ func (h *locationHandler) GetAddressSuggestionsByText(w http.ResponseWriter, r *
 	input := r.URL.Query().Get("q")
 	addresses, err := h.service.GetQueryAutoCompleteByText(input)
 	if err != nil {
-		http.Error(w, "Please input a valid string", http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 	json.NewEncoder(w).Encode(addresses)

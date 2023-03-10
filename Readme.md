@@ -18,20 +18,24 @@ main -> server -> handler -> service -> repository -> adapter -> external
 # Configs
 ## config.yml
 ```
-google:
-  maps_api_key: 'API_KEY_GOES_HERE'
-test:
-  maps_api_key: ''
-baidu:
-  maps_api_key: 'API_KEY_GOES_HERE'
-address_provider: "google"
+location_partner:
+  google:
+    maps_api_key: 'API_KEY_GOES_HERE'
+  test:
+    maps_api_key: ''
+  geoscape:
+    maps_api_key: 'API_KEY_GOES_HERE'
+  location_provider: "google"
+
 cache:
   redis:
     host: "localhost:6379"
     password: ""
     db: 0
-  cache_db: "redis"
+  in_memory:
+  cache_db: "in_memory"
 
+country: "AU"
 port: 3000
 ```
 
@@ -62,6 +66,6 @@ navigate to http://localhost:3000/swagger/index.html
 ## Docker
 1. Place the config.yml file in the repo root
 2. Update the api key for the service of your choice
-3. Update the address_provider key in the config.yml with the service of your choice (e.g: google)
+3. Update the location_provider key in the config.yml with the service of your choice (e.g: google)
 4. Update the cache_db key in the config.yml with the db of your choice (e.g: redis)
 5. Run `docker-compose up`

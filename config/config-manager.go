@@ -13,16 +13,23 @@ import (
 )
 
 type ServiceConfig struct {
-	Country string `yaml:"country"`
-	Port    int    `yaml:"port"`
-	Google  struct {
+	Country         string          `yaml:"country"`
+	Port            int             `yaml:"port"`
+	Cache           cacheConfig     `yaml:"cache"`
+	LocationPartner locationPartner `yaml:"location_partner"`
+}
+
+type locationPartner struct {
+	Google struct {
 		MapsApiKey string `yaml:"maps_api_key"`
 	} `yaml:"google"`
 	Geoscape struct {
 		MapsApiKey string `yaml:"maps_api_key"`
 	} `yaml:"geoscape"`
-	AddressProvider string      `yaml:"address_provider"`
-	Cache           cacheConfig `yaml:"cache"`
+	Test struct {
+		MapsApiKey string `yaml:"maps_api_key"`
+	} `yaml:"test"`
+	LocationProvider string `yaml:"location_provider"`
 }
 
 type cacheConfig struct {
@@ -64,13 +71,13 @@ func (c *ConfigManager) LoadConfigs() {
 	}
 }
 func (c *ConfigManager) LoadLocationConfig(cacheRepository *domain.CacheRepository) (domain.AddressRepository, error) {
-	switch c.Config.AddressProvider {
+	switch c.Config.LocationPartner.LocationProvider {
 	case "google":
 		fmt.Println("Using Google Configs")
-		return google.NewGoogleMapsRepository(c.Config.Google.MapsApiKey, c.Config.Country, *cacheRepository)
+		return google.NewGoogleMapsRepository(c.Config.LocationPartner.Google.MapsApiKey, c.Config.Country, *cacheRepository)
 	case "geoscape":
 		fmt.Println("Using Geoscape Configs")
-		return geoscape.NewGeoscapeRepository(c.Config.Geoscape.MapsApiKey, c.Config.Country, *cacheRepository)
+		return geoscape.NewGeoscapeRepository(c.Config.LocationPartner.Geoscape.MapsApiKey, c.Config.Country, *cacheRepository)
 	case "test":
 		fmt.Println("Using Mock Configs")
 		return third_party.NewMockRepository(), nil

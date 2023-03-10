@@ -29,7 +29,7 @@ func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 	endpoint := fmt.Sprintf("https://api.psma.com.au/v1/predictive/address/%s", id)
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
-		return nil, errors.New("Address not found")
+		return nil, err
 	}
 	req.Header.Set("Authorization", r.ApiKey)
 	req.Header.Set("Accept", "")
@@ -38,7 +38,7 @@ func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return nil, errors.New("Address not found")
+		return nil, err
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
