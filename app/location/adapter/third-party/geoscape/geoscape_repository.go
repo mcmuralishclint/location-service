@@ -22,7 +22,7 @@ func NewGeoscapeRepository(apiKey string, country string, cacheRepo domain.Cache
 func (r *GeoscapeRepository) GetByID(id string) (*domain.Address, error) {
 	address, _ := r.cacheRepo.GetAddress(id)
 	if address != nil {
-		return nil, errors.New("Address not found")
+		return address, nil
 	}
 	// call API
 
