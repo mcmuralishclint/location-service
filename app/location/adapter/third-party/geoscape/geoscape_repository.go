@@ -74,7 +74,6 @@ func (r *GeoscapeRepository) QueryAutoComplete(input string) ([]domain.Autocompl
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
-	fmt.Println(string(body))
 	addressFormatter := NewGeoscapeAddressFormatter()
 	predictions, err := addressFormatter.FormatAddressSuggestion(body)
 
